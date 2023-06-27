@@ -86,10 +86,27 @@ exit(0);
 }
 
 /**
+ * @brief Starts the shell process.
+ *
+ * @param envp The environment variables as an array of strings.
+ * @return An integer status code.
+ */
+int start_shell(char **envp)
+{
+// ...
+}
+
+/**
 * ssa_prompt - repeatedly prompts user and executes user's cmds if applicable
 * @en: envrionmental variables
 * Return: 0 on success
 */
+char **env_linked_list(char **envp)
+{
+/* create linked list of environment variables */
+char **env = NULL;
+return env;
+}
 int ssa_prompt(char **env)
 {
 list_t *env;
