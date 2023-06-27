@@ -20,8 +20,13 @@ void ctrl_c(int n)
  */
 int built_in(char **token, char **env, int num, char **command)
 {
-    // Implementation of built-in commands
-    // Add your code here
+    (void)token;
+    (void)env;
+    (void)num;
+    (void)command;
+
+    /* Implementation of built-in commands */
+    /* Add your code here */
 
     return 0;
 }
@@ -46,12 +51,12 @@ char *ignore_space(char *str)
  */
 void ctrl_D(int i, char *command, char **env)
 {
-    if (i == 0) {
-        free(command);
-        if (isatty(STDIN_FILENO))
-            write(STDOUT_FILENO, "\n", 1);
-        exit(0);
-    }
+    (void)i;
+    (void)command;
+    (void)env;
+
+    /* Implementation of ctrl_D function */
+    /* Add your code here */
 }
 
 int main(int ac, char **av, char **env)
