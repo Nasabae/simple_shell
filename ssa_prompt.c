@@ -23,7 +23,7 @@ int built_in(char **token, list_t *env, int num, char **command)
 	int i = 0;
 
 	/* if user types "exit", free cmd tokens, and exit */
-	if (_strcmp(token[0], "exit") == 0)
+	if (ssa_strcmp(token[0], "exit") == 0)
 	{
 		i = __exit(token, env, num, command);
 	}
@@ -41,13 +41,13 @@ int built_in(char **token, list_t *env, int num, char **command)
 	/* if user types "setenv", create or modify linked list node */
 	else if (_strcmp(token[0], "setenv") == 0)
 	{
-		_setenv(&env, token);
+		setenv(&env, token);
 		i = 1;
 	}
 	/* if user types "setenv", remove linked list node */
 	else if (_strcmp(token[0], "unsetenv") == 0)
 	{
-		_unsetenv(&env, token);
+		unsetenv(&env, token);
 		i = 1;
 	}
 	return (i);
@@ -116,7 +116,7 @@ int prompt(char **en)
 		{
 			free(n_command); continue;
 		}
-		token = NULL; token = _str_tok(command, " "); /*token user cmd*/
+		token = NULL; token c_str_tok(command, " "); /*token user cmd*/
 		if (n_command != NULL)
 			free(n_command);
 		exit_stat = built_in(token, env, command_line_no, NULL);
