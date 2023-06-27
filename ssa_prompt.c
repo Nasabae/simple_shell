@@ -90,7 +90,7 @@ exit(0);
 * @en: envrionmental variables
 * Return: 0 on success
 */
-int ssa_prompt(char **en)
+int ssa_prompt(char **env)
 {
 list_t *env;
 size_t i = 0, n = 0;
