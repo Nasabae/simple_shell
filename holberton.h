@@ -11,8 +11,8 @@
 int _strlen(const char *s);
 char *_strcpy(char *dest, const char *src);
 int _putchar(char c);
-void _puts(char *str);
-unsigned int nbr_spaces(char *s);
-char **stringToTokens(char *str);
+void ssa_puts(char *str);
+unsigned int ssa_nbr_spaces(char *s);
+char **ssa_stringToTokens(char *str);
 
 #endif

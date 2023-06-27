@@ -33,7 +33,7 @@ int _execve(char **s, list_t *env, int num)
 	}
 	/* else flesh out full path */
 	else
-		holder = _which(s[0], env);
+		holder = ssa_which(s[0], env);
 	/* if not an executable, free */
 	if (access(holder, X_OK) != 0)
 	{

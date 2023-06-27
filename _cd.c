@@ -26,7 +26,7 @@ char *c_strcat(char *dest, char *src)
 	}
 
 	/* _realloc because dest was malloced outside of function */
-	dest = _realloc(dest, len, sizeof(char) * total_len + 1);
+	dest = realloc(dest, sizeof(char) * (total_len + 1));
 
 	j = 1; /* ignore the first character */
 	while (src[j] != '\0')
@@ -53,10 +53,10 @@ int c_setenv(list_t **env, char *name, char *dir)
 	char *cat;
 	list_t *holder;
 
-	cat = _strdup(name); /* create new concatenated string */
-	cat = _strcat(cat, "=");
-	cat = _strcat(cat, dir);
-	index = find_env(*env, name); /* get idx to env var in linked list */
+	cat = strdup(name); /* create new concatenated string */
+	cat = strcat(cat, "=");
+	cat = strcat(cat, dir);
+	index = ssa_find_env(*env, name); /* get idx to env var in linked list */
 
 	/* traverse to idx, free node data, reassign data */
 	holder = *env;
@@ -66,7 +66,7 @@ int c_setenv(list_t **env, char *name, char *dir)
 		j++;
 	}
 	free(holder->var);
-	holder->var = _strdup(cat);
+	holder->var = strdup(cat);
 	free(cat);
 	return (0);
 }
@@ -153,11 +153,11 @@ int _cd(char **str, list_t *env, int num)
 			if (str[1][0] != '/')
 			{
 				dir = getcwd(dir, 0);
-				dir = _strcat(dir, "/");
-				dir = _strcat(dir, str[1]);
+				dir = strcat(dir, "/");
+				dir = strcat(dir, str[1]);
 			}
 			else
-				dir = _strdup(str[1]);
+				dir = strdup(str[1]);
 		}
 		exit_stat = cd_execute(env, current, dir, str[1], num);
 		free(dir);

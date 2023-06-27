@@ -49,7 +49,7 @@ char **c_str_tok(char *str, char *delm)
 	while (si < se)
 	{
 		/* malloc lengths for each token ptr in array */
-		len = t_strlen(str, si, d_ch);
+		len = strlen(str);
 		toks[p] = malloc(sizeof(char) * (len + 1));
 		if (toks[p] == NULL)
 			return (NULL);
