@@ -41,7 +41,7 @@ void non_interactive(list_t *env)
 		command_line_no++;
 		token = NULL; /* tokenize each command in array of commands */
 		token = c_str_tok(n_line[n], " ");
-		exit_stat = built_in(token, env, command_line_no, n_line);
+		exit_stat = ssa_built_in(token, env, command_line_no, n_line);
 		if (exit_stat)
 		{
 			n++;
