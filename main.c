@@ -7,12 +7,10 @@
  * @env: environmental variables
  * Return: 0 on success
  */
-int main(int ac, char **av, char **env)
+int main(int ac, char **av)
 {
 	(void)ac;
 	(void)av;
-
-	ssa_prompt(env);
 
 	return (0);
 }
