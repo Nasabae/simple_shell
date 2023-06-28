@@ -128,7 +128,8 @@ continue;
 /* Declare and define the 'holder' variable */
 list_t *holder = NULL;
 /* Use the 'holder' variable in the function*/
-char *const str[] = { holder->string, NULL };
+char *const str[] = {(holder != NULL && holder->string != NULL) ?
+holder->string : NULL, NULL };
 const char *str_const = (const char *)str;
 exit_stat = _execve((char **)&token[0], token[0], atoi(str_const), env);
 } while (1); /* keep on repeating till user exits shell */
