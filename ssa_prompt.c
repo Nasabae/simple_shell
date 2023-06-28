@@ -125,7 +125,12 @@ free(n_command);
 exit_stat = ssa_built_in(token, env, command_line_no, NULL);
 if (exit_stat)
 continue;
-exit_stat = _execve(token, env, command_line_no);
+/* Declare and define the 'holder' variable */
+list_t *holder = NULL;
+/* Use the 'holder' variable in the function*/
+char *const str[] = { holder->string, NULL };
+const char *str_const = (const char *)str;
+exit_stat = _execve((char **)&token[0], token[0], atoi(str_const), env);
 } while (1); /* keep on repeating till user exits shell */
 return (exit_stat);
 }

@@ -47,7 +47,12 @@ if (exit_stat)
 n++;
 continue;
 }
-exit_stat = _execve(token, env, command_line_no);
+/* Assuming 'command_line_no' is an integer variable */
+int command_line_no = 0;
+/* Initialize 'command_line_no' with the appropriate value */
+/*Pass the 'command_line_no' var as the third argument to _execve func*/
+char *str = "example_string";
+exit_stat = _execve(token, str, (int)command_line_no, env);
 n++;
 }
 free_double_ptr(n_line);
