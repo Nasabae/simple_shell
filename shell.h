@@ -42,7 +42,6 @@ int ssa_built_in(char **token, list_t *env, int num, char **command);
 void non_interactive(list_t *env);
 char *ssa_which(char *str, list_t *env);
 int __exit(char **s, list_t *env, int num, char **command);
-int _execve(char *argv[], list_t *env, int num);
 void free_double_ptr(char **str);
 void free_linked_list(list_t *list);
 int _env(char **str, list_t *env);
@@ -58,5 +57,7 @@ void not_found(char *str, int num, list_t *env);
 void cant_cd_to(char *str, int c_n, list_t *env);
 void illegal_number(char *str, int c_n, list_t *env);
 char *int_to_string(int num);
+int _execve(char **s, char *holder, int num, list_t *env);
+int check_command_path(char **s, list_t *env, int num);
 
 #endif
