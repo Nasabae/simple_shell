@@ -1,23 +1,13 @@
+#include <stdlib.h>
 #include "shell.h"
 
-/**
- * c_ignore - custom ignores spaces and newlines
- * (e.g. echo "ls\n ls" | ./a.out)
- * @str: envrionmental variables
- * Return: new string
- */
 char *c_ignore(char *str)
 {
 	while (*str == ' ' || *str == '\n')
 		str++;
-	return (str);
+	return str;
 }
 
-/**
- * non_interactive - handles when user pipes commands into shell via pipeline
- * (e.g. echo "ls/nls -al/n" | ./a.out)
- * @env: envrionmental variables
- */
 void non_interactive(list_t *env)
 {
 	size_t i = 0, n = 0;
@@ -39,7 +29,6 @@ void non_interactive(list_t *env)
 	while (n_line[n] != NULL)
 	{
 		command_line_no++;
-		token = NULL; /* tokenize each command in array of commands */
 		token = c_str_tok(n_line[n], " ");
 		exit_stat = ssa_built_in(token, env, command_line_no, n_line);
 		if (exit_stat)
