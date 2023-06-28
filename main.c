@@ -13,7 +13,7 @@ int main(int ac, char **av, char **env)
 (void)ac;
 (void)av;
 
-int ssa_prompt(char **env);
+prompt(char **env);
 
 return (0);
 }
