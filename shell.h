@@ -16,6 +16,7 @@
 /**
  * struct list - linked list for environmental variables
  * @var: holds environmental variable string
+ * @string: holds environmental variable value
  * @next: points to next node
  */
 typedef struct list
