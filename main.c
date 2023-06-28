@@ -2,18 +2,15 @@
 
 /**
  * main - creates a simple shell
- * @ac: arg count
- * @av: arg vector
+ * @ac: argument count
+ * @av: argument vectors
  * @env: environmental variables
- * Return: 0 on success, 1 on error
+ * Return: 0 on success
  */
-
-int main(int ac, char **av, char **env)
+int main(int ac, char **av)
 {
 (void)ac;
 (void)av;
-
-prompt(char **env);
 
 return (0);
 }
