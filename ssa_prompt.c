@@ -109,10 +109,10 @@ n++;
 command[n] = '\0';
 if (command[0] == '\0') /* reprompt if user hits enter only */
 {free(n_command);
-}
-token = NULL;
+} token = NULL;
 token = c_str_tok(command, " "); /*token user cmd*/
-for (int i = 0; token[i] != NULL; i++)
+i = 0; while (token[i] != NULL)
+i++;
 {free(token[i]);
 }
 free(token);
