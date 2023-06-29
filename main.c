@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <stdlib.h>
 
 /**
  * main - creates a simple shell
@@ -9,10 +10,10 @@
  */
 int main(int ac, char **av, char **env)
 {
-(void)ac;
-(void)av;
+    (void)ac;
+    (void)av;
 
-ssa_prompt(env);
-
-return (0);
+    ssa_prompt(env);
+  
+    return 0;
 }
