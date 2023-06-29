@@ -60,40 +60,37 @@ return (status);
 
 int check_command_path(char **s, list_t *env, int num)
 {
-char *holder = NULL;
-int t = 0;
+    char *holder = NULL;
+    int t = 0;
+    int status = 0; 
 
-/* Check if command is absolute path */
-if (access(s[0], F_OK) == 0)
-{
-holder = strdup(s[0]);
-t = 1;
-}
-else
-{
-holder = ssa_which(s[0], env);
-}
+    /* Check if command is absolute path */
+    if (access(s[0], F_OK) == 0)
+    {
+        holder = strdup(s[0]);
+        t = 1;
+    }
+    else
+    {
+        holder = ssa_which(s[0], env);
+    }
 
-/* If not an executable, free and return error */
-if (access(holder, X_OK) != 0)
-{
-not_found(s[0], num, env);
-free(holder);
-free_double_ptr(s);
-return (127);
-}
+    /* If not an executable, free and return error */
+    if (access(holder, X_OK) != 0)
+    {
+        not_found(s[0], num, env);
+        free(holder);
+        free_double_ptr(s);
+        return 127;
+    }
 
-int status = _execve(s, holder, num, env);
+    status = _execve(s, holder, num, env); 
 
-free_double_ptr(s);
-if (t == 0)
-{
-free(holder);
-}
+    free_double_ptr(s);
+    if (t == 0)
+    {
+        free(holder);
+    }
 
-return (status);
-{
-int status = check_command_path(s, env, num);
-return (status);
-}
+    return status;
 }

@@ -87,45 +87,47 @@ exit(0);
 * Return: 0 on Success
 */
 int ssa_prompt(char **en)
-{list_t *env;
-size_t i = 0, n = 0;
-int command_line_no = 0, exit_stat = 0;
-char *command, *n_command, **token;
-env = env_linked_list(en);
-do {command_line_no++;
-if (isatty(STDIN_FILENO)) /* reprompt if in interactive shell */
-write(STDOUT_FILENO, "$ ", 2);
-else
-non_interactive(env);
-signal(SIGINT, ctrl_c); /* makes ctrl+c not work */
-command = NULL;
-i = 0; /* reset vars each time loop runs */
-i = get_line(&command); /* read user's cmd in stdin */
-ctrl_D(i, command, env); /* exits shell if ctrl-D */
-n_command = command;
-command = ssa_ignore_space(command);
-n = 0; while (command[n] != '\n') /* replace get_line's \n with \0 */
-n++;
-command[n] = '\0';
-if (command[0] == '\0') /* reprompt if user hits enter only */
-{free(n_command);
-} token = NULL;
-token = c_str_tok(command, " "); /*token user cmd*/
-i = 0; while (token[i] != NULL)
-i++;
-{free(token[i]);
-}
-free(token);
-if (n_command != NULL)
-free(n_command);
-exit_stat = ssa_built_in(token, env, command_line_no, NULL);
-if (exit_stat)
-continue;
-list_t *holder = NULL;
-char *const str[] = {(holder != NULL && holder->string != NULL) ?
-holder->string : NULL, NULL };
-const char *str_const = (const char *)str;
-exit_stat = _execve((char **)&token[0], token[0], atoi(str_const), env);
-} while (1);
-return (exit_stat);
+{
+    list_t *env;
+    size_t i = 0, n = 0;
+    int command_line_no = 0, exit_stat = 0;
+    char *command, *n_command, **token;
+
+    env = env_linked_list(en);
+    do {
+        command_line_no++;
+        if (isatty(STDIN_FILENO)) /* reprompt if in interactive shell */
+            write(STDOUT_FILENO, "$ ", 2);
+        else
+            non_interactive(env);
+        signal(SIGINT, ctrl_c); /* makes ctrl+c not work */
+        command = NULL;
+        i = 0; /* reset vars each time loop runs */
+        i = get_line(&command); /* read user's cmd from stdin */
+        ctrl_D(i, command, env); /* exits shell if ctrl-D */
+        n_command = command;
+        command = ssa_ignore_space(command);
+        n = 0;
+        while (command[n] != '\n') /* replace get_line's \n with \0 */
+            n++;
+        command[n] = '\0';
+        if (command[0] == '\0') /* reprompt if user hits enter only */
+        {
+            free(n_command);
+            continue;
+        }
+        token = NULL;
+        token = c_str_tok(command, " "); /* token user cmd */
+        i = 0;
+        while (token[i] != NULL)
+            i++;
+        free(token[i]);
+        free(token);
+        if (n_command != NULL)
+            free(n_command);
+        exit_stat = ssa_built_in(token, env, command_line_no, NULL);
+        if (exit_stat)
+            continue;
+    } while (1);
+    return exit_stat;
 }
