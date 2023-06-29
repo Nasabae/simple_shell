@@ -228,10 +228,16 @@ ssize_t get_node_index(list_t *, list_t *);
 
 /* vars.c */
 int is_chain(info_t *, char *, size_t *);
-void check_chain(info_t *, char *, size_t *, size_t);
+void check_chain(info_t *, char *, size_t *, size_t, size_t len);
 int replace_alias(info_t *);
 int replace_vars(info_t *);
 int replace_string(char **, char *);
+
+/* delim */
+int is_delim(char c, const char *delimiters);
+
+/* free info */
+void free_info(info_t *info, int flag);
 
 #endif
 
