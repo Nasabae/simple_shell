@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
 * ctrl_c - ignore Ctrl-C input and prints prompt again
 * @n: takes in int from signal
@@ -21,7 +20,6 @@ write(STDOUT_FILENO, "\n$ ", 3);
 int ssa_built_in(char **token, list_t *env, int num, char **command)
 {
 int i = 0;
-
 /* if user types "exit", free cmd tokens, and exit */
 if (strcmp(token[0], "exit") == 0)
 {
@@ -86,7 +84,7 @@ exit(0);
 /**
 * ssa_prompt - repeatedly prompts user and executes user's cmds if applicable
 * @en: envrionmental variables
-* Return: 0 on success
+* Return: 0 on Success
 */
 int ssa_prompt(char **en)
 {list_t *env;
@@ -94,8 +92,7 @@ size_t i = 0, n = 0;
 int command_line_no = 0, exit_stat = 0;
 char *command, *n_command, **token;
 env = env_linked_list(en);
-do {
-command_line_no++;
+do {command_line_no++;
 if (isatty(STDIN_FILENO)) /* reprompt if in interactive shell */
 write(STDOUT_FILENO, "$ ", 2);
 else
@@ -107,16 +104,18 @@ i = get_line(&command); /* read user's cmd in stdin */
 ctrl_D(i, command, env); /* exits shell if ctrl-D */
 n_command = command;
 command = ssa_ignore_space(command);
-n = 0;
-while (command[n] != '\n') /* replace get_line's \n with \0 */
+n = 0; while (command[n] != '\n') /* replace get_line's \n with \0 */
 n++;
 command[n] = '\0';
 if (command[0] == '\0') /* reprompt if user hits enter only */
-{
-free(n_command);
+{free(n_command);
 }
 token = NULL;
 token = c_str_tok(command, " "); /*token user cmd*/
+for (int i = 0; token[i] != NULL; i++)
+{free(token[i]);
+}
+free(token);
 if (n_command != NULL)
 free(n_command);
 exit_stat = ssa_built_in(token, env, command_line_no, NULL);
