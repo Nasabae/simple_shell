@@ -89,12 +89,10 @@ exit(0);
 * Return: 0 on success
 */
 int ssa_prompt(char **en)
-{
-list_t *env;
+{list_t *env;
 size_t i = 0, n = 0;
 int command_line_no = 0, exit_stat = 0;
 char *command, *n_command, **token;
-
 env = env_linked_list(en);
 do {
 command_line_no++;
@@ -116,7 +114,6 @@ command[n] = '\0';
 if (command[0] == '\0') /* reprompt if user hits enter only */
 {
 free(n_command);
-continue;
 }
 token = NULL;
 token = c_str_tok(command, " "); /*token user cmd*/
@@ -125,13 +122,11 @@ free(n_command);
 exit_stat = ssa_built_in(token, env, command_line_no, NULL);
 if (exit_stat)
 continue;
-/* Declare and define the 'holder' variable */
 list_t *holder = NULL;
-/* Use the 'holder' variable in the function*/
 char *const str[] = {(holder != NULL && holder->string != NULL) ?
 holder->string : NULL, NULL };
 const char *str_const = (const char *)str;
 exit_stat = _execve((char **)&token[0], token[0], atoi(str_const), env);
-} while (1); /* keep on repeating till user exits shell */
+} while (1);
 return (exit_stat);
 }
