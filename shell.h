@@ -98,6 +98,12 @@ int histcount;
 {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
 0, 0, 0}
 
+#ifndef MAX_LINE_LEN
+#define MAX_LINE_LEN 1024
+#endif
+
+
+
 /**
  * struct builtin - contains a builtin string and related function
  * type: the builtin command flag
@@ -108,6 +114,9 @@ typedef struct builtin
 char *type;
 int (*func)(info_t *);
 } builtin_table;
+
+/* exit builtin */
+int exit_builtin(info_t *info);
 
 /* _putchar.c */
 int _putchar(char c);

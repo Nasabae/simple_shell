@@ -56,7 +56,7 @@ int find_builtin(info_t *info)
 {
 	int i, built_in_ret = -1;
 	builtin_table builtintbl[] = {
-		{"exit",(int (*)(info_t *)) _exit},
+		{"exit", exit_builtin},
 		{"env", ssa_myenv},
 		{"help", ssa_myhelp},
 		{"history", ssa_myhistory},
