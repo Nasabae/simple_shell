@@ -61,7 +61,7 @@ if (len)
 {
 x = z;
 p = buf + z;
-check_chain(info, buf, &x, len);
+check_chain(info, buf, &x, len, MAX_LINE_LEN);
 while (x < len)
 {
 if (is_chain(info, buf, &x))

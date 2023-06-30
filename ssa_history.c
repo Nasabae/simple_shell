@@ -6,7 +6,7 @@
  * Return: allocated string containing history file
  */
 
-char *ssa_get_history_file(info_t *info)
+char *ssa_get_history_file(info_t *info __attribute__((unused)))
 {
 char *buf, *dir;
 dir = getenv("HOME=");
@@ -36,7 +36,7 @@ if (!filename)
 return (-1);
 fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 free(filename);
-if (fd == -1)
+if (fd == (unsigned int)-1)
 return (-1);
 for (node = info->history; node; node = node->next)
 {
