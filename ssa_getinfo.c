@@ -21,9 +21,6 @@ void ssa_set_info(info_t *info, char **av)
 {
 int z = 0;
 info->fname = av[0];
-if (info->arg)
-{
-info->argv = strtow(info->arg, "\t");
 if (!info->argv)
 {
 info->argv = malloc(sizeof(char *) * 2);
@@ -39,7 +36,7 @@ info->argc = z;
 replace_alias(info);
 replace_vars(info);
 }
-}
+
 
 /**
  * ssa_free_info - frees info_t structure fields

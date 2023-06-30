@@ -1,5 +1,9 @@
 #include "shell.h"
 
+void free_info(info_t *info, int exit_status);
+int exit_builtin(info_t *info);
+int is_delim(char c, const char *delimiters); 
+
 /**
 * hsh - main shell loop
 * @info: the parameter & return info struct
@@ -9,38 +13,36 @@
 */
 int hsh(info_t *info, char **av)
 {
-ssize_t r = 0;
-int builtin_ret = 0;
+    ssize_t r = 0;
+    int builtin_ret = 0;
 
-while (r != -1 && builtin_ret != -2)
-{
-ssa_clear_info(info);
-if (ssa_interactive(info))
-_puts("$ ");
-_putchar(BUF_FLUSH);
-r = ssa_get_input(info);
-if (r != -1)
-{
-ssa_set_info(info, av);
-builtin_ret = find_builtin(info);
-if (builtin_ret == -1)
-find_cmd(info);
-}
-else if (ssa_interactive(info))
-_putchar('\n');
-free_info(info, 0);
-}
-ssa_write_history(info);
-free_info(info, 1);
-if (!ssa_interactive(info) && info->status)
-exit(info->status);
-if (builtin_ret == -2)
-{
-if (info->err_num == -1)
-exit(info->status);
-exit(info->err_num);
-}
-return (builtin_ret);
+    while (r != -1 && builtin_ret != -2)
+    {
+        ssa_clear_info(info);
+        if (ssa_interactive(info))
+            _puts("$ ");
+        _putchar(BUF_FLUSH);
+        r = ssa_get_input(info);
+        if (r != -1)
+        {
+            ssa_set_info(info, av);
+            builtin_ret = find_builtin(info);
+            if (builtin_ret == -1)
+                find_cmd(info);
+        }
+        else if (ssa_interactive(info))
+            _putchar('\n');
+    }
+    ssa_write_history(info);
+    if (!ssa_interactive(info) && info->status)
+        exit(info->status);
+    if (builtin_ret == -2)
+    {
+        if (info->err_num == -1)
+            exit(info->status);
+        exit(info->err_num);
+    }
+    return (builtin_ret);
 }
 
 /**
@@ -48,33 +50,34 @@ return (builtin_ret);
 * @info: the parameter & return info struct
 *
 * Return: -1 if builtin not found,
-*			0 if builtin executed successfully,
-*			1 if builtin found but not successful,
-*			-2 if builtin signals exit()
+*          0 if builtin executed successfully,
+*          1 if builtin found but not successful,
+*          -2 if builtin signals exit()
 */
 int find_builtin(info_t *info)
 {
-int i, built_in_ret = -1;
-builtin_table builtintbl[] = {
-{"exit", exit_builtin},
-{"env", ssa_myenv},
-{"help", ssa_myhelp},
-{"history", ssa_myhistory},
-{"setenv", ssa_mysetenv},
-{"unsetenv", ssa_myunsetenv},
-{"cd", ssa_mycd},
-{"alias", ssa_myalias},
-{NULL, NULL}
-};
+    int i, built_in_ret = -1;
+    builtin_table builtintbl[] = {
+        {"env", ssa_myenv},
+        {"help", ssa_myhelp},
+        {"history", ssa_myhistory},
+        {"setenv", ssa_mysetenv},
+        {"unsetenv", ssa_myunsetenv},
+        {"cd", ssa_mycd},
+        {"alias", ssa_myalias},
+        {NULL, NULL}
+    };
 
-for (i = 0; builtintbl[i].type; i++)
-if (_strcmp(info->argv[0], builtintbl[i].type) == 0)
-{
-info->line_count++;
-built_in_ret = builtintbl[i].func(info);
-break;
-}
-return (built_in_ret);
+    for (i = 0; builtintbl[i].type; i++)
+    {
+        if (_strcmp(info->argv[0], builtintbl[i].type) == 0)
+        {
+            info->line_count++;
+            built_in_ret = builtintbl[i].func(info);
+            break;
+        }
+    }
+    return built_in_ret;
 }
 
 /**
@@ -85,76 +88,63 @@ return (built_in_ret);
 */
 void find_cmd(info_t *info)
 {
-char *path = NULL;
-int i, k;
+    char *path = NULL;
+    int i, k;
 
-info->path = info->argv[0];
-if (info->linecount_flag == 1)
-{
-info->line_count++;
-info->linecount_flag = 0;
-}
-for (i = 0, k = 0; info->arg[i]; i++)
-if (!is_delim(info->arg[i], " \t\n"))
-k++;
-if (!k)
-return;
+    info->path = info->argv[0];
+    if (info->linecount_flag == 1)
+    {
+        info->line_count++;
+        info->linecount_flag = 0;
+    }
+    for (i = 0, k = 0; info->arg[i]; i++)
 
-path = find_path(info, getenv("PATH="), info->argv[0]);
-if (path)
-{
-info->path = path;
-fork_cmd(info);
-}
-else
-{
-if ((ssa_interactive(info) || getenv("PATH=")
-|| info->argv[0][0] == '/') && is_cmd(info, info->argv[0]))
-fork_cmd(info);
-else if (*(info->arg) != '\n')
-{
-info->status = 127;
-ssa_print_error(info, "not found\n");
-}
-}
+    if (!k)
+        return;
+
+    path = find_path(info, getenv("PATH="), info->argv[0]);
+    if (path)
+    {
+        info->path = path;
+        fork_cmd(info);
+    }
+    else
+    {
+        if ((ssa_interactive(info) || getenv("PATH=") || info->argv[0][0] == '/') && is_cmd(info, info->argv[0]))
+            fork_cmd(info);
+        else if (*(info->arg) != '\n')
+        {
+            info->status = 127;
+            ssa_print_error(info, "not found\n");
+        }
+    }
 }
 
 /**
-* fork_cmd - forks a an exec thread to run cmd
+* fork_cmd - forks an exec thread to run cmd
 * @info: the parameter & return info struct
 *
 * Return: void
 */
 void fork_cmd(info_t *info)
 {
-pid_t child_pid;
+    pid_t child_pid;
 
-child_pid = fork();
-if (child_pid == -1)
-{
-/* TODO: PUT ERROR FUNCTION */
-perror("Error:");
-return;
-}
-if (child_pid == 0)
-{
-if (execve(info->path, info->argv, ssa_get_environ(info)) == -1)
-{
-free_info(info, 1);
-if (errno == EACCES)
-exit(126);
-exit(1);
-}
-/* TODO: PUT ERROR FUNCTION */
-}
-else
-{
-wait(&(info->status));
-if (WIFEXITED(info->status))
-{
-info->status = WEXITSTATUS(info->status);
-if (info->status == 126)
-ssa_print_error(info, "Permission denied\n");
-}
-}
+    child_pid = fork();
+    if (child_pid == -1)
+    {
+        perror("Error:");
+        return;
+    }
+    
+    else
+    {
+        wait(&(info->status));
+        if (WIFEXITED(info->status))
+        {
+            info->status = WEXITSTATUS(info->status);
+            if (info->status == 126)
+                ssa_print_error(info, "Permission denied\n");
+        }
+    }
 }

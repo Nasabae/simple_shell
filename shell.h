@@ -151,16 +151,11 @@ char *_strcat(char *, char *);
 char *_strcpy(char *, char *);
 char *_strdup(const char *);
 void _puts(char *);
-int _putchar(char);
 
 /* ssa_exits.c */
 char *ssa_strncpy(char *, char *, int);
 char *ssa_strncat(char *, char *, int);
 char *ssa_strchr(char *, char);
-
-/* tokenizer.c */
-char **strtow(char *, char *);
-char **strtow2(char *, char);
 
 /* realloc.c */
 char *_memset(char *, char, unsigned int);
@@ -242,11 +237,7 @@ int replace_alias(info_t *);
 int replace_vars(info_t *);
 int replace_string(char **, char *);
 
-/* delim */
-int is_delim(char c, const char *delimiters);
-
 /* free info */
 void free_info(info_t *info, int flag);
 
 #endif
-

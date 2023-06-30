@@ -9,38 +9,42 @@
  */
 ssize_t ssa_input_buf(info_t *info, char **buf, size_t *len)
 {
-ssize_t z = 0;
-size_t len_p = 0;
-char *line = NULL;
-if (!*len) /* if nothing is left in the buffer, fill it */
-{
-/*bfree((void **)info->cmd_buf);*/
-free(*buf);
-*buf = NULL;
-signal(SIGINT, ssa_sigintHandler);
-#if USE_GETLINE
-z = getline(buf, &len_p, stdin);
-#else
-z = getline(&line, &len_p, stdin);
-#endif
-if (z > 0)
-{
-if ((*buf)[z - 1] == '\n')
-{
-(*buf)[z - 1] = '\0';
-z--;
+    ssize_t z = 0;
+    size_t len_p = 0;
+    char *line = NULL;
+
+    if (!*len) /* if nothing is left in the buffer, fill it */
+    {
+        free(*buf);
+        *buf = NULL;
+        signal(SIGINT, ssa_sigintHandler);
+
+        #if USE_GETLINE
+        z = getline(buf, &len_p, stdin);
+        #else
+        z = getline(&line, &len_p, stdin);
+        *buf = line;
+        #endif
+
+        if (z > 0)
+        {
+            if ((*buf)[z - 1] == '\n')
+            {
+                (*buf)[z - 1] = '\0';
+                z--;
+            }
+            info->linecount_flag = 1;
+            ssa_remove_comments(*buf);
+            ssa_build_history_list(info, *buf, info->histcount++);
+        }
+
+        *len = z;
+        info->cmd_buf = buf;
+    }
+
+    return z;
 }
-info->linecount_flag = 1;
-ssa_remove_comments(*buf);
-ssa_build_history_list(info, *buf, info->histcount++);
-{
-*len = z;
-info->cmd_buf = buf;
-}
-}
-}
-return (z);
-}
+
 
 /**
  * ssa_get_input - gets a line minus the newline
